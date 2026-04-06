@@ -4,3 +4,4 @@ config.h
 .comfile
 *.out
 *~
+.direnv
