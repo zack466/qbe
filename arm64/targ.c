@@ -9,6 +9,15 @@ int arm64_rsave[] = {
 	V24, V25, V26, V27, V28, V29, V30,
 	-1
 };
+int apple_rsave[] = {
+	R0,  R1,  R2,  R3,  R4,  R5,  R6,  R7,
+	R8,  R9,  R10, R11, R12, R13, R14, R15,
+	IP0, IP1, LR,
+	V0,  V1,  V2,  V3,  V4,  V5,  V6,  V7,
+	V16, V17, V18, V19, V20, V21, V22, V23,
+	V24, V25, V26, V27, V28, V29, V30,
+	-1
+};
 int arm64_rclob[] = {
 	R19, R20, R21, R22, R23, R24, R25, R26,
 	R27, R28,
@@ -17,6 +26,7 @@ int arm64_rclob[] = {
 };
 
 #define RGLOB (BIT(FP) | BIT(SP) | BIT(IP1) | BIT(R18))
+#define APPLE_RGLOB (BIT(FP) | BIT(SP) | BIT(IP1) | BIT(R18))
 
 static int
 arm64_memargs(int op)
@@ -30,10 +40,6 @@ arm64_memargs(int op)
 	.ngpr = NGPR, \
 	.fpr0 = V0, \
 	.nfpr = NFPR, \
-	.rglob = RGLOB, \
-	.nrglob = 4, \
-	.rsave = arm64_rsave, \
-	.nrsave = {NGPS, NFPS}, \
 	.retregs = arm64_retregs, \
 	.argregs = arm64_argregs, \
 	.memargs = arm64_memargs, \
@@ -47,6 +53,10 @@ Target T_arm64 = {
 	.abi0 = elimsb,
 	.emitfin = elf_emitfin,
 	.asloc = ".L",
+	.rglob = RGLOB,
+	.nrglob = 4,
+	.rsave = arm64_rsave,
+	.nrsave = {NGPS, NFPS},
 	ARM64_COMMON
 };
 
@@ -57,6 +67,10 @@ Target T_arm64_apple = {
 	.emitfin = macho_emitfin,
 	.asloc = "L",
 	.assym = "_",
+	.rglob = APPLE_RGLOB,
+	.nrglob = 4,
+	.rsave = apple_rsave,
+	.nrsave = {NGPS - 1, NFPS},
 	ARM64_COMMON
 };
 
@@ -65,5 +79,6 @@ MAKESURE(globals_are_not_arguments,
 );
 MAKESURE(arrays_size_ok,
 	sizeof arm64_rsave == (NGPS+NFPS+1) * sizeof(int) &&
+	sizeof apple_rsave == (NGPS-1+NFPS+1) * sizeof(int) &&
 	sizeof arm64_rclob == (NCLR+1) * sizeof(int)
 );
