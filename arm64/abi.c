@@ -453,11 +453,18 @@ selcall(Fn *fn, Ins *i0, Ins *i1, Insl **ilp)
 			emit(op, 0, R, i->arg[0], r);
 		} else {
 			assert(i->op == Oargc);
-			emit(Oblit1, 0, R, INT(c->size), R);
-			emit(Oblit0, 0, R, i->arg[1], r);
+			if (T.apple && (c->class & Cptr)) {
+				emit(Ostorel, 0, R, i->arg[1], r);
+			} else {
+				emit(Oblit1, 0, R, INT(c->size), R);
+				emit(Oblit0, 0, R, i->arg[1], r);
+			}
 		}
-		emit(Oadd, Kl, r, TMP(SP), getcon(off, fn));
-		off += c->size;
+		
+		int slot_off = off;
+		
+		emit(Oadd, Kl, r, TMP(SP), getcon(slot_off, fn));
+		off += (c->class & Cptr) ? 8 : (T.apple ? align(c->size, 8) : c->size);
 	}
 	if (stk)
 		emit(Osub, Kl, TMP(SP), TMP(SP), rstk);
