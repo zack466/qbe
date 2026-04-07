@@ -1,0 +1,100 @@
+# Extreme high pressure to force usage of all registers
+export function l $check_x18(l %p) {
+@start
+	%v0 =l loadl %p
+	%v1 =l add %v0, 1
+	%v2 =l add %v1, 1
+	%v3 =l add %v2, 1
+	%v4 =l add %v3, 1
+	%v5 =l add %v4, 1
+	%v6 =l add %v5, 1
+	%v7 =l add %v6, 1
+	%v8 =l add %v7, 1
+	%v9 =l add %v8, 1
+	%v10 =l add %v9, 1
+	%v11 =l add %v10, 1
+	%v12 =l add %v11, 1
+	%v13 =l add %v12, 1
+	%v14 =l add %v13, 1
+	%v15 =l add %v14, 1
+	%v16 =l add %v15, 1
+	%v17 =l add %v16, 1
+	%v18 =l add %v17, 1
+	%v19 =l add %v18, 1
+	%v20 =l add %v19, 1
+	%v21 =l add %v20, 1
+	%v22 =l add %v21, 1
+	%v23 =l add %v22, 1
+	%v24 =l add %v23, 1
+	%v25 =l add %v24, 1
+	%v26 =l add %v25, 1
+	%v27 =l add %v26, 1
+	%v28 =l add %v27, 1
+	%v29 =l add %v28, 1
+	%v30 =l add %v29, 1
+	%v31 =l add %v30, 1
+	%v32 =l add %v31, 1
+	%v33 =l add %v32, 1
+	%v34 =l add %v33, 1
+	%v35 =l add %v34, 1
+	%v36 =l add %v35, 1
+	%v37 =l add %v36, 1
+	%v38 =l add %v37, 1
+	%v39 =l add %v38, 1
+
+	%s0 =l add %v0, %v1
+	%s1 =l add %s0, %v2
+	%s2 =l add %s1, %v3
+	%s3 =l add %s2, %v4
+	%s4 =l add %s3, %v5
+	%s5 =l add %s4, %v6
+	%s6 =l add %s5, %v7
+	%s7 =l add %s6, %v8
+	%s8 =l add %s7, %v9
+	%s9 =l add %s8, %v10
+	%s10 =l add %s9, %v11
+	%s11 =l add %s10, %v12
+	%s12 =l add %s11, %v13
+	%s13 =l add %s12, %v14
+	%s14 =l add %s13, %v15
+	%s15 =l add %s14, %v16
+	%s16 =l add %s15, %v17
+	%s17 =l add %s16, %v18
+	%s18 =l add %s17, %v19
+	%s19 =l add %s18, %v20
+	%s20 =l add %s19, %v21
+	%s21 =l add %s20, %v22
+	%s22 =l add %s21, %v23
+	%s23 =l add %s22, %v24
+	%s24 =l add %s23, %v25
+	%s25 =l add %s24, %v26
+	%s26 =l add %s25, %v27
+	%s27 =l add %s26, %v28
+	%s28 =l add %s27, %v29
+	%s29 =l add %s28, %v30
+	%s30 =l add %s29, %v31
+	%s31 =l add %s30, %v32
+	%s32 =l add %s31, %v33
+	%s33 =l add %s32, %v34
+	%s34 =l add %s33, %v35
+	%s35 =l add %s34, %v36
+	%s36 =l add %s35, %v37
+	%s37 =l add %s36, %v38
+	%s38 =l add %s37, %v39
+	ret %s38
+}
+
+# >>> driver
+# #include <stdio.h>
+# extern long check_x18(long *);
+# int main() {
+#     long p = 0;
+#     check_x18(&p);
+#     printf("ok\n");
+#     return 0;
+# }
+# <<<
+
+# >>> output
+# ok
+# <<<
