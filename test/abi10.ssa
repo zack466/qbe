@@ -1,0 +1,51 @@
+# Test complicated struct passing and return
+# Includes mixed types and nesting
+
+type :inner = { w, s }
+type :outer = { b 4, :inner, d, l }
+
+function w $check(:outer %o, l %ptr) {
+@start
+	# Extract values from %o and check them
+	# Due to QBE limitations on struct access, we usually pass structs as pointers
+	# or use the ABI to load them. Here we test passing by value.
+
+	# Driver will fill outer with:
+	# { .b = {1, 2, 3, 4}, .in = { .w = 42, .s = 3.14f }, .d = 2.718, .l = 1234567890 }
+
+	storel 0, %ptr
+	ret 0
+}
+
+export function $test_complex_abi(:outer %o) {
+@start
+	%res =w call $cb_complex(:outer %o)
+	ret
+}
+
+# >>> driver
+# #include <stdio.h>
+# #include <string.h>
+# #include <math.h>
+# typedef struct { int w; float s; } inner;
+# typedef struct { char b[4]; inner in; double d; long l; } outer;
+# void cb_complex(outer o) {
+# 	printf("%d %d %d %d\n", o.b[0], o.b[1], o.b[2], o.b[3]);
+# 	printf("%d %.3f\n", o.in.w, o.in.s);
+# 	printf("%.3f\n", o.d);
+# 	printf("%ld\n", o.l);
+# }
+# extern void test_complex_abi(outer o);
+# int main() {
+# 	outer o = { {1, 2, 3, 4}, {42, 3.141f}, 2.718, 1234567890L };
+# 	test_complex_abi(o);
+# 	return 0;
+# }
+# <<<
+
+# >>> output
+# 1 2 3 4
+# 42 3.141
+# 2.718
+# 1234567890
+# <<<
