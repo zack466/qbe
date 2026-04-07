@@ -384,7 +384,7 @@ selcall(Fn *fn, Ins *i0, Ins *i1, Insl **ilp)
 		}
 		if (c->class & Cstk) {
 			stk = align(stk, c->align);
-			stk += c->size;
+			stk += (T.apple ? align(c->size, 8) : c->size);
 		}
 	}
 	stk = align(stk, 16);
@@ -520,7 +520,7 @@ selpar(Fn *fn, Ins *i0, Ins *i1)
 			if (c->class & Cstk) {
 				off = align(off, c->align);
 				fn->tmp[i->to.val].slot = -(off+2);
-				off += c->size;
+				off += (T.apple ? align(c->size, 8) : c->size);
 			} else
 				for (n=0; n<c->nreg; n++) {
 					r = TMP(c->reg[n]);
@@ -533,7 +533,7 @@ selpar(Fn *fn, Ins *i0, Ins *i1)
 			else
 				op = Oload;
 			emit(op, *c->cls, i->to, SLOT(-(off+2)), R);
-			off += c->size;
+			off += (T.apple ? align(c->size, 8) : c->size);
 		} else {
 			emit(Ocopy, *c->cls, i->to, TMP(*c->reg), R);
 		}
