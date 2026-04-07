@@ -36,8 +36,18 @@ Created a separate register set `apple_rsave` for the Apple target that excludes
 ---
 
 ## New Tests
-Added 4 new stress tests to verify compiler robustness for more complex language features:
+Added 5 new stress tests to verify compiler robustness for more complex language features:
 1. **Register Spilling (`spill2.ssa`)**: Uses 64 simultaneous live variables to force heavy spilling on all architectures.
 2. **Complex ABI (`abi10.ssa`)**: Tests nested structs with mixed types (byte, int, float, double, long) to verify ABI classification.
 3. **Large Control Flow (`switch.ssa`)**: Simulates a large switch statement with 16+ branches to test branch resolution.
 4. **Context Simulation (`ctx.ssa`)**: Simulates state saving/restoring (foundation for coroutines/effects) and verifies PHI node resolution across many cycles.
+5. **Reserved Register Safeguard (`apple_x18.ssa`)**: Ensures the Apple Silicon reserved platform register `x18` is never used for general allocation, even under extreme register pressure.
+
+---
+
+## Final Verification of Apple Silicon ABI Compliance
+In addition to the bug fixes above, the following Apple Silicon specific requirements were verified in the codebase:
+- **Mandatory Frame Pointer**: Verified that `arm64/emit.c` maintains a strict `x29` frame pointer chain.
+- **Narrow Returns/Arguments**: Verified that `apple_extsb` in `arm64/abi.c` correctly promotes sub-32-bit types.
+- **PC-Relative Addressing**: Verified that `arm64/emit.c` uses Mach-O compatible `@page` and `@pageoff` relocations.
+- **Reserved Registers**: Verified that `x18` is now reserved and `hint #34` (BTI) is used at function entry points.

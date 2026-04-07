@@ -112,7 +112,7 @@ init() {
 	"")
 		case `uname` in
 		*Darwin*)
-			cc="cc"
+			cc="clang"
 			;;
 		*OpenBSD*)
 			cc="cc -nopie -lpthread"
