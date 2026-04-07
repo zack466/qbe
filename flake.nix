@@ -1,4 +1,3 @@
-
 {
   description = "A simple flake for QBE";
 
@@ -16,9 +15,11 @@
       {
         devShells.default = pkgs.mkShell {
           # nativeBuildInputs is for tools needed on the host to compile the program
-          nativeBuildInputs = [
+          nativeBuildInputs = (if pkgs.stdenv.isDarwin then [
+            pkgs.clang
+          ] else [
             pkgs.gcc
-          ] ++ lib.optionals pkgs.stdenv.isDarwin [
+          ]) ++ lib.optionals pkgs.stdenv.isDarwin [
             pkgs.darwin.cctools
           ];
 
