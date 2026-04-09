@@ -1,14 +1,14 @@
 # Bug Fix Journal
 
-## Bug 1: Apple ARM64 Stack Argument Alignment
-**File**: `arm64/abi.c`
-**Test**: `abi1.ssa`
+## Bug 1: Apple ARM64 Stack Argument Alignment (Corrected)
+**File**: `tools/test.sh`, `flake.nix` (reverted `arm64/abi.c`)
+**Test**: `abi1.ssa`, `vararg2.ssa`
 
 ### Description
-On Apple Silicon (ARM64 Apple target), the ABI for passing arguments on the stack differs from the standard ARM64 AAPCS64. While the standard allows packing smaller types (like 32-bit integers) tightly, Apple's ABI requires each argument to occupy an 8-byte aligned slot. QBE was incorrectly packing these arguments, leading to the callee reading garbage values from the stack.
+A mismatch was identified between QBE's ARM64 Apple target and the environment's default compiler (`gcc`). On Apple Silicon, the ABI allows for "tight" packing of stack arguments (e.g., 4-byte types only occupy 4 bytes). Standard AAPCS64 (followed by GCC) requires 8-byte slots. Initially, QBE was "fixed" to match GCC, but this made it non-compliant with the official Apple ABI used by system libraries and `clang`.
 
 ### Fix
-Updated the `selcall` and `selpar` functions in `arm64/abi.c` to enforce 8-byte alignment for each stack argument when the target is `T_arm64_apple`. This ensures that every argument starts at an 8-byte boundary relative to the stack pointer, and that the total stack space allocated for arguments is correctly calculated. This fix covers both regular calls and variadic calls.
+Reverted the stack alignment changes in `arm64/abi.c` to maintain compliance with Apple's tight-packing ABI. Instead, the environment and test runner were updated to use `clang` on Darwin targets. This ensures that the test driver is compiled with a compiler that shares the same ABI expectations as QBE.
 
 ---
 
