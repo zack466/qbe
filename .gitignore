@@ -4,3 +4,7 @@ config.h
 .comfile
 *.out
 *~
+.direnv
+journal.md
+PLAN.md
+TODO.md
