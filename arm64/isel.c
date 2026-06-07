@@ -256,7 +256,8 @@ seljmp(Blk *b, Fn *fn)
 			break;
 		}
 	if (ir && use == 1
-	&& iscmp(ir->op, &ck, &cc)) {
+	&& iscmp(ir->op, &ck, &cc)
+	&& KBASE(ck) == 0) {
 		if (selcmp(ir->arg, ck, fn))
 			cc = cmpop(cc);
 		b->jmp.type = Jjf + cc;
