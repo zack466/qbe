@@ -1,0 +1,79 @@
+export function w $switch_test(w %val) {
+@start
+	%c0 =w ceqw %val, 0
+	jnz %c0, @case0, @c1
+@c1
+	%c1 =w ceqw %val, 1
+	jnz %c1, @case1, @c2
+@c2
+	%c2 =w ceqw %val, 2
+	jnz %c2, @case2, @c3
+@c3
+	%c3 =w ceqw %val, 3
+	jnz %c3, @case3, @c4
+@c4
+	%c4 =w ceqw %val, 4
+	jnz %c4, @case4, @c5
+@c5
+	%c5 =w ceqw %val, 5
+	jnz %c5, @case5, @c6
+@c6
+	%c6 =w ceqw %val, 6
+	jnz %c6, @case6, @c7
+@c7
+	%c7 =w ceqw %val, 7
+	jnz %c7, @case7, @c8
+@c8
+	%c8 =w ceqw %val, 8
+	jnz %c8, @case8, @c9
+@c9
+	%c9 =w ceqw %val, 9
+	jnz %c9, @case9, @c10
+@c10
+	%c11 =w ceqw %val, 10
+	jnz %c11, @case10, @default
+
+@case0
+	ret 100
+@case1
+	ret 101
+@case2
+	ret 102
+@case3
+	ret 103
+@case4
+	ret 104
+@case5
+	ret 105
+@case6
+	ret 106
+@case7
+	ret 107
+@case8
+	ret 108
+@case9
+	ret 109
+@case10
+	ret 110
+@default
+	ret -1
+}
+
+# >>> driver
+# #include <stdio.h>
+# extern int switch_test(int);
+# int main() {
+# 	printf("%d\n", switch_test(0));
+# 	printf("%d\n", switch_test(5));
+# 	printf("%d\n", switch_test(10));
+# 	printf("%d\n", switch_test(20));
+# 	return 0;
+# }
+# <<<
+
+# >>> output
+# 100
+# 105
+# 110
+# -1
+# <<<

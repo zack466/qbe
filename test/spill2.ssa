@@ -1,0 +1,153 @@
+export function l $spill_stress(l %base) {
+@start
+	%v0 =l add %base, 0
+	%v1 =l add %base, 1
+	%v2 =l add %base, 2
+	%v3 =l add %base, 3
+	%v4 =l add %base, 4
+	%v5 =l add %base, 5
+	%v6 =l add %base, 6
+	%v7 =l add %base, 7
+	%v8 =l add %base, 8
+	%v9 =l add %base, 9
+	%v10 =l add %base, 10
+	%v11 =l add %base, 11
+	%v12 =l add %base, 12
+	%v13 =l add %base, 13
+	%v14 =l add %base, 14
+	%v15 =l add %base, 15
+	%v16 =l add %base, 16
+	%v17 =l add %base, 17
+	%v18 =l add %base, 18
+	%v19 =l add %base, 19
+	%v20 =l add %base, 20
+	%v21 =l add %base, 21
+	%v22 =l add %base, 22
+	%v23 =l add %base, 23
+	%v24 =l add %base, 24
+	%v25 =l add %base, 25
+	%v26 =l add %base, 26
+	%v27 =l add %base, 27
+	%v28 =l add %base, 28
+	%v29 =l add %base, 29
+	%v30 =l add %base, 30
+	%v31 =l add %base, 31
+	%v32 =l add %base, 32
+	%v33 =l add %base, 33
+	%v34 =l add %base, 34
+	%v35 =l add %base, 35
+	%v36 =l add %base, 36
+	%v37 =l add %base, 37
+	%v38 =l add %base, 38
+	%v39 =l add %base, 39
+	%v40 =l add %base, 40
+	%v41 =l add %base, 41
+	%v42 =l add %base, 42
+	%v43 =l add %base, 43
+	%v44 =l add %base, 44
+	%v45 =l add %base, 45
+	%v46 =l add %base, 46
+	%v47 =l add %base, 47
+	%v48 =l add %base, 48
+	%v49 =l add %base, 49
+	%v50 =l add %base, 50
+	%v51 =l add %base, 51
+	%v52 =l add %base, 52
+	%v53 =l add %base, 53
+	%v54 =l add %base, 54
+	%v55 =l add %base, 55
+	%v56 =l add %base, 56
+	%v57 =l add %base, 57
+	%v58 =l add %base, 58
+	%v59 =l add %base, 59
+	%v60 =l add %base, 60
+	%v61 =l add %base, 61
+	%v62 =l add %base, 62
+	%v63 =l add %base, 63
+
+	# Interleave operations to prevent early reclamation
+	%s0 =l add %v0, %v1
+	%s1 =l add %v2, %v3
+	%s2 =l add %v4, %v5
+	%s3 =l add %v6, %v7
+	%s4 =l add %v8, %v9
+	%s5 =l add %v10, %v11
+	%s6 =l add %v12, %v13
+	%s7 =l add %v14, %v15
+	%s8 =l add %v16, %v17
+	%s9 =l add %v18, %v19
+	%s10 =l add %v20, %v21
+	%s11 =l add %v22, %v23
+	%s12 =l add %v24, %v25
+	%s13 =l add %v26, %v27
+	%s14 =l add %v28, %v29
+	%s15 =l add %v30, %v31
+	%s16 =l add %v32, %v33
+	%s17 =l add %v34, %v35
+	%s18 =l add %v36, %v37
+	%s19 =l add %v38, %v39
+	%s20 =l add %v40, %v41
+	%s21 =l add %v42, %v43
+	%s22 =l add %v44, %v45
+	%s23 =l add %v46, %v47
+	%s24 =l add %v48, %v49
+	%s25 =l add %v50, %v51
+	%s26 =l add %v52, %v53
+	%s27 =l add %v54, %v55
+	%s28 =l add %v56, %v57
+	%s29 =l add %v58, %v59
+	%s30 =l add %v60, %v61
+	%s31 =l add %v62, %v63
+
+	%t0 =l add %s0, %s1
+	%t1 =l add %s2, %s3
+	%t2 =l add %s4, %s5
+	%t3 =l add %s6, %s7
+	%t4 =l add %s8, %s9
+	%t5 =l add %s10, %s11
+	%t6 =l add %s12, %s13
+	%t7 =l add %s14, %s15
+	%t8 =l add %s16, %s17
+	%t9 =l add %s18, %s19
+	%t10 =l add %s20, %s21
+	%t11 =l add %s22, %s23
+	%t12 =l add %s24, %s25
+	%t13 =l add %s26, %s27
+	%t14 =l add %s28, %s29
+	%t15 =l add %s30, %s31
+
+	%u0 =l add %t0, %t1
+	%u1 =l add %t2, %t3
+	%u2 =l add %t4, %t5
+	%u3 =l add %t6, %t7
+	%u4 =l add %t8, %t9
+	%u5 =l add %t10, %t11
+	%u6 =l add %t12, %t13
+	%u7 =l add %t14, %t15
+
+	%w0 =l add %u0, %u1
+	%w1 =l add %u2, %u3
+	%w2 =l add %u4, %u5
+	%w3 =l add %u6, %u7
+
+	%x0 =l add %w0, %w1
+	%x1 =l add %w2, %w3
+
+	%ret =l add %x0, %x1
+	ret %ret
+}
+
+# >>> driver
+# #include <stdio.h>
+# extern long spill_stress(long);
+# int main() {
+# 	/* Sum of 0..63 is (63*64)/2 = 2016. */
+# 	/* If base is 10, each of the 64 variables is base + i, so sum is 64*10 + 2016 = 640 + 2016 = 2656 */
+# 	printf("%ld\n", spill_stress(10));
+# 	return 0;
+# }
+# <<<
+
+# >>> output
+# 2656
+# <<<

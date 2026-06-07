@@ -1,0 +1,63 @@
+# Simulate context switching by manually saving/restoring registers to a buffer
+# This tests long-term survival of variables across many branches and potential spills
+
+type :ctx = { l 16 } # Buffer to hold 16 registers
+
+export function w $run_task(l %c, w %iter) {
+@start
+	# Task state
+	%v1 =l copy 0
+	%v2 =l copy 1
+@loop
+	%i =w phi @start %iter, @resume %i_next
+	%v1_phi =l phi @start %v1, @resume %v1_new
+	%v2_phi =l phi @start %v2, @resume %v2_new
+
+	# Fibonacci-like state update
+	%v_tmp =l add %v1_phi, %v2_phi
+	%v1_next =l copy %v2_phi
+	%v2_next =l copy %v_tmp
+
+	%i_next =w sub %i, 1
+	%done =w ceqw %i_next, 0
+	jnz %done, @end, @yield
+
+@yield
+	# "Save" state to buffer (simulating yield)
+	storel %v1_next, %c
+	%c8 =l add %c, 8
+	storel %v2_next, %c8
+	
+	# External "scheduler" would do something here
+	%dummy =w call $scheduler()
+	
+	# Resume
+	jmp @resume
+
+@resume
+	# "Restore" state from buffer
+	%v1_new =l loadl %c
+	%v1p8 =l add %c, 8
+	%v2_new =l loadl %v1p8
+	jmp @loop
+
+@end
+	ret 0
+}
+
+# >>> driver
+# #include <stdio.h>
+# typedef struct { long regs[16]; } ctx;
+# int scheduler() { return 0; }
+# extern int run_task(ctx *c, int iter);
+# int main() {
+# 	ctx c;
+# 	run_task(&c, 10);
+# 	printf("%ld %ld\n", c.regs[0], c.regs[1]);
+# 	return 0;
+# }
+# <<<
+
+# >>> output
+# 34 55
+# <<<
